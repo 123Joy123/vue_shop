@@ -1,12 +1,18 @@
 <template>
     <div>
-        <h1>个人中心</h1>
+        <nav-bar>
+            <template v-slot:default>个人中心</template>
+        </nav-bar>
     </div>
 </template>
 
 <script>
+import NavBar from "@/components/common/navbar/NavBar"
 export default {
-    name:'Home',
+    name:'Profile',
+    components:{
+        NavBar,
+    }
 }
 </script>
 
