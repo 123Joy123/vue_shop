@@ -8,13 +8,17 @@
         </div>
 
         <recommend-view :recommends="recommends"></recommend-view>
+        <!-- tabclick是这个组件里自定义的事件，tabClick是传过来的 -->
+        <tab-control @tabclick="tabClick" :titles="['畅销','新书','精选']"></tab-control>
 
     </div>
 </template>
 
 <script>
+// 路径必须用双引号
 import NavBar from "@/components/common/navbar/NavBar"
 import RecommendView from "./ChildComps/RecommendView"
+import TabControl from "@/components/content/tabcontrol/TabControl"
 import {getHomeAllData} from "@/network/home.js"
 import {ref,onMounted} from 'vue'
 export default {
@@ -30,13 +34,19 @@ export default {
             })
         })
 
+        const tabClick=(index)=>{
+
+        }
+
         return {
-            recommends
+            recommends,
+            tabClick,
         }
     },
     components:{
         NavBar,
         RecommendView,
+        TabControl,
     }
 }
 </script>
