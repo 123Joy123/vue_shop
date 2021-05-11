@@ -47,7 +47,7 @@ const router = createRouter({
 router.beforeEach((to,from,next)=>{
   //用户没有登录，则调转到登录页面
   next()
-  document.title=to.meta.title
+  // document.title=to.meta.title
 })
 
 export default router
