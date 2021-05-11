@@ -26,7 +26,7 @@ export default {
         let currentIndex=ref(0)
         const itemClick=(index)=>{
             currentIndex.value=index
-            emit('tabClick',index)
+            emit('tab-click',index)
         }
         return {
             currentIndex,
@@ -43,8 +43,9 @@ export default {
     line-height: 40px;
     text-align: center;
     font-size: 14px;
-    // background-color: yellow;
+    background-color: #ffffff;
     width: 100%;
+    z-index: 10;
 
     position: sticky;
     top: 44px;

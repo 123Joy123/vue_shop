@@ -8,3 +8,11 @@ export function getHomeAllData(){
 
     })
 }
+
+export function getHomeGoods(type="sales",page=1){
+    return request({
+        url:'/api/index?'+type+'=1&page='+page,
+        // method:get,
+
+    })
+}
