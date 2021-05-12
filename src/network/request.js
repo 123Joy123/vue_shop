@@ -1,4 +1,5 @@
 import axios from 'axios'
+
 export function request(config){
     const instance=axios.create({
         baseURL:'https://api.shop.eduwork.cn/',
@@ -19,7 +20,8 @@ export function request(config){
     instance.interceptors.response.use(res=>{
         return res.data ? res.data:res
     },err=>{
-
+        //用不成
+        Notify(err.response.data.errors[Object.keys(err.response.data.errors)[0]][0])
     })
 
     return instance(config)
