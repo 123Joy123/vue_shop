@@ -22,6 +22,8 @@
                 <goods-list :goods="showGoods"></goods-list>
             </div>
         </div>
+
+        <back-top @b-top="bTop" v-show="isTabFixed"></back-top>
     </div>
 </template>
 
@@ -31,6 +33,7 @@ import NavBar from "@/components/common/navbar/NavBar"
 import RecommendView from "./ChildComps/RecommendView"
 import TabControl from "@/components/content/tabcontrol/TabControl"
 import GoodsList from "@/components/content/goods/GoodsList"
+import BackTop from "@/components/common/backtop/BackTop"
 import {getHomeAllData,getHomeGoods} from "@/network/home.js"
 import {ref,reactive,onMounted, computed,watchEffect,nextTick} from 'vue'
 import BetterScroll from 'better-scroll'
@@ -121,6 +124,11 @@ export default {
             })
         })
 
+        const bTop=()=>{
+            // 500是时间，能有个缓冲效果
+            bscroll.scrollTo(0,0,500)
+        }
+
         return {
             recommends,
             tabClick,
@@ -128,6 +136,7 @@ export default {
             showGoods,
             isTabFixed,
             banref,
+            bTop,
         }
     },
     components:{
@@ -135,6 +144,7 @@ export default {
         RecommendView,
         TabControl,
         GoodsList,
+        BackTop,
     },
 }
 </script>
