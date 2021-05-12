@@ -59,7 +59,7 @@ export default {
 
         onMounted(()=>{
             getHomeAllData().then(res=>{
-                // console.log(res.goods)
+                console.log(res)
                 recommends.value=res.goods.data
             })
 
