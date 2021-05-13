@@ -12,14 +12,14 @@
 
         <van-form @submit="onSubmit">
             <van-field
-                v-model="name"
+                v-model="userinfo.name"
                 name="用户名"
                 label="用户名"
                 placeholder="用户名"
                 :rules="[{ required: true, message: '请填写用户名' }]"
             />
             <van-field
-                v-model="password"
+                v-model="userinfo.password"
                 type="password"
                 name="密码"
                 label="密码"
@@ -27,7 +27,7 @@
                 :rules="[{ required: true, message: '请填写密码' }]"
             />
             <van-field
-                v-model="password_confirmation"
+                v-model="userinfo.password_confirmation"
                 type="password"
                 name="确认密码"
                 label="确认密码"
@@ -35,7 +35,7 @@
                 :rules="[{ required: true, message: '请填写一致密码' }]"
             />
             <van-field
-                v-model="email"
+                v-model="userinfo.email"
                 name="电子邮箱"
                 label="电子邮箱"
                 placeholder="电子邮箱"
@@ -43,10 +43,10 @@
             />
             <div style="margin: 16px;">
                 <div class="link-login"
-                @click="$router.push({path:'/login'})">
-                    登录
+                    @click="$router.push({path:'/login'})">
+                        登录
                 </div>
-                <van-button round block type="info" color="#42bbaa" native-type="submit">提交</van-button>
+                <van-button round block type="primary" color="#42bbaa" native-type="submit">提交</van-button>
             </div>
         </van-form>
 
@@ -78,12 +78,12 @@ export default {
             register(userinfo),then(res=>{
                 console.log(res)
 
-                if(res.status=='201'){
-                    Toast.success('注册成功')
-                    setTimeout(()=>{
-                        router.push({path:'/login'})
-                    },1000)
-                }
+                // if(res.status=='201'){
+                //     Toast.success('注册成功')
+                //     setTimeout(()=>{
+                //         router.push({path:'/login'})
+                //     },1000)
+                // }
                 //清空一下密码栏
                 userinfo.password_confirmation=''
                 userinfo.password=''
@@ -91,7 +91,8 @@ export default {
         }
 
         return {
-            ...toRefs(userinfo),
+            // ...toRefs(userinfo),
+            userinfo,
             onSubmit,
         }
     }
