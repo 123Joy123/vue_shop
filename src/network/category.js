@@ -7,3 +7,11 @@ export function getCategory(){
 
     })
 }
+
+export function getCategoryGoods(order='sales',cid=0,page=1){
+    return request({
+        url:'/api/goods?category='+cid+'&page='+page+'&'+order+'=1',
+        // method:get,
+
+    })
+}
