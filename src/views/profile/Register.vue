@@ -4,13 +4,7 @@
             <template v-slot:default>用户注册</template>
         </nav-bar>
 
-        <div style="margin-top:50px;">
-            <div style="text-align:center;">
-                
-            </div>
-        </div>
-
-        <van-form @submit="onSubmit">
+        <van-form style="margin-top:45px;" @submit="onSubmit">
             <van-field
                 v-model="userinfo.name"
                 name="用户名"
@@ -75,19 +69,29 @@ export default {
         })
 
         const onSubmit=()=>{
-            register(userinfo),then(res=>{
-                console.log(res)
+            console.log('@@@@@@@')
 
-                // if(res.status=='201'){
-                //     Toast.success('注册成功')
-                //     setTimeout(()=>{
-                //         router.push({path:'/login'})
-                //     },1000)
-                // }
-                //清空一下密码栏
-                userinfo.password_confirmation=''
-                userinfo.password=''
-            })
+            //验证密码是否一致
+            if(userinfo.password!=userinfo.password_confirmation){
+                Notify('两次密码不一致')
+            }
+            else{
+                register(userinfo).then(res=>{
+                    console.log('201201')
+
+                    if(res.status=='201'){
+                        Toast.success('注册成功')
+                        setTimeout(()=>{
+                            router.push({path:'/login'})
+                        },1000)
+                    }
+                    // 清空一下密码栏
+                    userinfo.password_confirmation=''
+                    userinfo.password=''
+                })
+            }
+
+            
         }
 
         return {

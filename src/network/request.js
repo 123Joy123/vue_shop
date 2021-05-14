@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { Notify } from 'vant'
 
 export function request(config){
     const instance=axios.create({
@@ -22,6 +23,7 @@ export function request(config){
     },err=>{
         //用不成
         Notify(err.response.data.errors[Object.keys(err.response.data.errors)[0]][0])
+        // console.log(err.response.data)
     })
 
     return instance(config)

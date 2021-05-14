@@ -1,12 +1,12 @@
 import {request} from './request'
-export function register(){
+export function register(data){
     return request({
         url:'/api/auth/register',
         method:'post',
         data,
     })
 }
-export function login(){
+export function login(data){
     return request({
         url:'/api/auth/login',
         method:'post',
