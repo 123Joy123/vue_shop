@@ -33,6 +33,7 @@
                 <div class="content">
                     <van-card
                         v-for="item in showGoods" :key="item.id"
+                        @click="itemClick(item.id)"
                         :num="item.comments_count"
                         :tag="item.comments_count>=0 ? '流行': ''"
                         :price="item.price"
@@ -50,6 +51,7 @@
 import NavBar from "@/components/common/navbar/NavBar"
 import {ref,reactive,onMounted,computed} from 'vue'
 import {getCategory,getCategoryGoods} from "@/network/category"
+import {useRouter} from 'vue-router'
 export default {
     name:'Category',
     components:{
@@ -62,6 +64,11 @@ export default {
         let activeTab=ref(1)
         let currentOrder=ref('sales')
         let currentCid=ref(0)
+
+        const router=useRouter()
+        const itemClick=(id)=>{
+            router.push({path:'/detail',query:{id}})
+        }
 
         //数据模型
         const goods=reactive({
@@ -135,6 +142,7 @@ export default {
             getGoods,
             goods,
             showGoods,
+            itemClick,
         }
     }
 }

@@ -57,7 +57,7 @@
 import NavBar from "@/components/common/navbar/NavBar"
 import {register} from "@/network/user"
 import { Toast,Notify } from 'vant';
-import {ref,reactive, toRefs} from "vue"
+import {ref,reactive, toRefs} from 'vue'
 import {useRouter} from 'vue-router'
 export default {
     name:"Register",
