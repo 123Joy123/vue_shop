@@ -27,7 +27,7 @@
 
 <script>
 import NavBar from "@/components/common/navbar/NavBar"
-import {useRoute} from 'vue-router'
+import {useRoute,useRouter} from 'vue-router'
 import {ref,onMounted, reactive,toRefs} from 'vue'
 import {getDetail} from "@/network/detail"
 import {addCart} from "@/network/shoppingcar"
@@ -39,6 +39,7 @@ export default {
     },
     setup(){
         const route=useRoute()
+        const router=useRouter()
         let id=ref(0)
         //接收id
         id.value=route.query.id
@@ -69,6 +70,12 @@ export default {
         //立即购买
         const goToCart=()=>{
             console.log('buy')
+            addCart({goods_id:book.detail.id,num:1}).then(res=>{
+                if(res.status=='204' || res.status=='201'){
+                    Toast.success('前往购物车购买')
+                    router.push({path:'/shoppingcar'})
+                }
+            })
         }
 
         return {
