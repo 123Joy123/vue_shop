@@ -1,4 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
+// import { useStore } from 'vuex'
+import store from '../store'
+import { Toast,Notify } from 'vant';
 const Home =() => import('../views/home/Home')
 const Category =() => import('../views/category/Category')
 const Detail =() => import('../views/detail/Detail')
@@ -6,6 +9,7 @@ const Profile =() => import('../views/profile/Profile')
 const ShoppingCar =() => import('../views/shoppingcar/ShoppingCar')
 const Register =() => import('../views/profile/Register')
 const Login =() => import('../views/profile/Login')
+
 
 const routes = [
   {
@@ -31,17 +35,23 @@ const routes = [
   {
     path: '/profile',
     name: 'Profile',
-    component: Profile
+    component: Profile,
+    meta:{
+      isAuthRequired:true
+    }
   },
   {
     path: '/register',
     name: 'Register',
-    component: Register
+    component: Register,
   },
   {
     path: '/shoppingcar',
     name: 'ShoppingCar',
-    component: ShoppingCar
+    component: ShoppingCar,
+    meta:{
+      isAuthRequired:true
+    }
   },
   {
     path: '/login',
@@ -58,8 +68,12 @@ const router = createRouter({
 //导航守卫，next是2的用法
 router.beforeEach((to,from,next)=>{
   //用户没有登录，则调转到登录页面
-  next()
-  // document.title=to.meta.title
+  if(to.meta.isAuthRequired && store.state.user.isLogin===false){
+    Notify('请先登录')
+    return next('/login')
+  }else{
+    next()
+  }
 })
 
 export default router

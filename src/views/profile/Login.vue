@@ -15,7 +15,7 @@
                 v-model="email"
                 name="电子邮箱"
                 label="电子邮箱"
-                placeholder="电子邮箱"
+                placeholder="test123@test.com"
                 :rules="[{ required: true, message: '请填写电子邮箱' }]"
             />
             <van-field
@@ -23,7 +23,7 @@
                 type="password"
                 name="密码"
                 label="密码"
-                placeholder="密码"
+                placeholder="test123"
                 :rules="[{ required: true, message: '请填写密码' }]"
             />           
             <div style="margin: 16px;">
@@ -44,6 +44,7 @@ import {login} from "@/network/user"
 import { Toast,Notify } from 'vant';
 import {ref,reactive, toRefs} from "vue"
 import {useRouter} from 'vue-router'
+import {useStore} from 'vuex'
 export default {
     name:"Login",
     components:{
@@ -51,6 +52,7 @@ export default {
     },
     setup(){
         const router=useRouter()
+        const store=useStore()
 
         const userinfo=reactive({
             email:'',
@@ -58,11 +60,13 @@ export default {
         })
 
         const onSubmit=()=>{
-            login(userinfo),then(res=>{
+            login(userinfo).then(res=>{
                 // 将token保存到本地window.localStorage
                 window.localStorage.setItem('token',res.access_token)
+                //用Vuex记录登录状态
+                store.commit('setIsLogin',true)
 
-                this.$toast.success('登录成功')
+                Toast.success('登录成功')
 
                 userinfo.email=''
                 userinfo.password=''
