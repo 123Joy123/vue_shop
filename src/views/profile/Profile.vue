@@ -8,18 +8,18 @@
             <div class="user-info">
                 <div class="info">
                     <div class="user-desc">
-                        <span>昵称：test123</span>
-                        <span>登录名：test123@test.com</span>
+                        <span>昵称：{{user.name}}</span>
+                        <span>登录名：{{user.email}}</span>
                     </div>
                 </div>
             </div>
 
             <ul class="user-list">
-                <li class="van-hairline--bottom">
+                <li class="van-hairline--bottom" @click="goTo('/order')">
                     <span>我的订单</span>
                     <van-icon name="arrow"></van-icon>
                 </li>
-                <li class="van-hairline--bottom">
+                <li class="van-hairline--bottom" @click="goTo('/address')">
                     <span>地址管理</span>
                     <van-icon name="arrow"></van-icon>
                 </li>
@@ -35,7 +35,7 @@
 
 <script>
 import NavBar from "@/components/common/navbar/NavBar"
-import {logout} from "@/network/user"
+import {logout,getUser} from "@/network/user"
 import { Toast } from 'vant'
 import {useRouter} from 'vue-router'
 import {useStore} from 'vuex'
@@ -48,6 +48,18 @@ export default {
     setup(){
         const router=useRouter()
         const store=useStore()
+
+        const state=reactive({
+            user:{}
+        })
+
+        onMounted(()=>{
+            getUser().then(res=>{
+                // console.log(res);
+                state.user=res
+            })
+        })
+
         const tologout=()=>{
             logout().then(res=>{
                 if(res.status=='204'){
@@ -62,8 +74,15 @@ export default {
                 }
             })
         }
+
+        const goTo=(path,query)=>{
+            router.push({path,query:query || {} })
+        }
+
         return {
             tologout,
+            ...toRefs(state),
+            goTo,
         }
     }
 }

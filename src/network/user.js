@@ -19,3 +19,9 @@ export function logout(){
         method:'post',
     })
 }
+
+export function getUser(){
+    return request({
+        url:'/api/user',
+    })
+}
