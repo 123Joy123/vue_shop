@@ -5,38 +5,46 @@
         </nav-bar>
         <div class="cart-box">
             <div class="cart-body">
-                <van-checkbox-group ref="checkboxGroup">
-                    <van-swipe-cell :right-width="50">
+                <van-checkbox-group ref="checkboxGroup"
+                    v-model="result" @change="groupChange">
+                    <van-swipe-cell :right-width="50"
+                        v-for="(item,index) in list" :key="index">
                         <div class="good-item">
-                            <van-checkbox name=""></van-checkbox>
+                            <van-checkbox :name="item.id"></van-checkbox>
                             <div class="good-img">
-                                <img src="" alt="">
+                                <img :src="item.goods.cover_url" alt="">
                             </div>
                             <div class="good-desc">
                                 <div class="good-title">
-                                    <span>细说PHP</span>
-                                    <span>x100</span>
+                                    <span>{{item.goods.title}}</span>
+                                    <span>{{item.goods.stock}}</span>
                                 </div>
                                 <div class="good-btn">
                                     <div class="price">
                                         <small>￥</small>
-                                        999.00
+                                        {{item.goods.price+'.00'}}
                                     </div>
-                                    <van-stepper integer :min="1" :max="10" :model-value="5" name="10" async-change />
+                                    <van-stepper integer :min="1" :max="item.goods.stock" :model-value="item.num" :name="item.id" async-change @change="onChange" />
                                 </div>
                             </div>
                             
                         </div>
                         
                         <template #right>
-                            <van-button square text="删除" type="danger" class="delete-button" />
+                            <van-button square text="删除" type="danger" class="delete-button"
+                            @click="deleteGood(item.id)" />
                         </template>
                     </van-swipe-cell>
                  </van-checkbox-group>
             </div>
-            <van-submit-bar class="submit-all" :price="3050" button-text="提交订单" @submit="onSubmit">
-                <van-checkbox>全选</van-checkbox>
+            <van-submit-bar class="submit-all" :price="total*100" button-text="提交订单" @submit="onSubmit">
+                <van-checkbox v-model:checked="checkAll" @click="allCheck">全选</van-checkbox>
             </van-submit-bar>
+            <div class="empty" v-if="!list.length">
+                <!-- <img src="" alt="空购物车" class="empty-cart"> -->
+                <div class="title">购物车空空如也</div>
+                <van-button round color="#1baeae" type="primary" block @click="goTo">前往选购</van-button>
+            </div>
         </div>
     </div>
 </template>
@@ -46,7 +54,8 @@ import NavBar from "@/components/common/navbar/NavBar"
 import {ref,reactive,toRefs,onMounted,computed} from 'vue'
 import {useRouter} from 'vue-router'
 import {useStore} from 'vuex'
-import {getCart,deleteCartItem,checkedCard,modifyCart} from '@/network/shoppingcar'
+import {getCart,deleteCartItem,checkedCart,modifyCart} from '@/network/shoppingcar'
+import { Toast } from 'vant'
 export default {
     name:'ShoppingCar',
     components:{
@@ -58,18 +67,118 @@ export default {
         const router=useRouter()
         const store=useStore()
 
-        const checkAll = () => {
-            checkboxGroup.value.toggleAll(true);
+        const state=reactive({
+            //购物车列表
+            list:[],
+            //id
+            result:[],
+            checkAll:true,
+        })
+
+        const init=()=>{
+            Toast.loading('加载中...')
+
+            getCart('include=goods').then(res=>{
+                state.list=res.data
+                // console.log('car:'+res.data);
+
+                //过滤出被选中的商品,再只存入id
+                state.result=res.data.filter(n=>n.is_checked==1
+                ).map(item=>item.id)
+                Toast.clear()   
+            })
         }
-        const toggleAll = () => {
-            checkboxGroup.value.toggleAll();
+
+        onMounted(()=>{
+            init()
+        })
+
+        const total=computed(()=>{
+            let sum=0
+            state.list.filter(item=>state.result.includes(item.id)).forEach(item=>{
+                sum+=parseInt(item.num) * parseFloat(item.goods.price)
+            })
+            return sum
+        })
+
+        const onChange=(value,detail)=>{
+            // console.log('value:'+value);
+            // console.log('detail:'+detail.name);
+
+            Toast.loading('修改中...')//防止点击过快
+
+            modifyCart(detail.name,{num:value}).then(res=>{
+                state.list.forEach(item=>{
+                    if(item.id==detail.name){
+                        item.num=value
+                    }
+                })
+                Toast.clear()
+            })
+        }
+
+        const deleteGood=(id)=>{
+            deleteCartItem(id).then(res=>{
+                init()
+            })
+        }
+
+        const groupChange=(result)=>{
+            if(result.length==state.list.length){
+                state.checkAll=true
+            }else{
+                state.checkAll=false
+            }
+            console.log(result);
+            state.result=result
+            checkedCart({cart_ids:result})
+        }
+
+        const allCheck=()=>{
+            // state.checkAll=!state.checkAll
+            if(!state.checkAll){
+                state.result=state.list.map(item=>item.id)
+                state.checkAll=true
+            }else{
+                state.result=[]
+                state.checkAll=false
+            }
+        }
+
+        const goTo=()=>{
+            router.push({path:'/home'})
+        }
+
+        // const checkAll = () => {
+        //     checkboxGroup.value.toggleAll(true);
+        // }
+        // const toggleAll = () => {
+        //     checkboxGroup.value.toggleAll();
+        // }
+
+        //创建订单
+        const onSubmit=()=>{
+            if(state.result.length==0){
+                Toast.fail('请先选择结算商品')
+                return
+            }else{
+                router.push({path:'/createcoder'})
+            }
         }
 
         return {
             checked,
-            checkAll,
-            toggleAll,
             checkboxGroup,
+            // checkAll,
+            // toggleAll,
+            ...toRefs(state),
+            goTo,
+            onChange,
+            groupChange,
+            allCheck,
+            deleteGood,
+            total,
+            onSubmit,
         }
     },
 }
