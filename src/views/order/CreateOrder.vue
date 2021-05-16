@@ -5,7 +5,7 @@
         </nav-bar>
 
         <div class="address-wrap">
-            <div class="name" @click="goTo">
+            <div class="name">
                 <span>名字</span>
                 <span>电话</span>
             </div>
@@ -37,10 +37,10 @@
 
         <van-popup closeable :close-on-click-overlay="false" v-model:show="showPay" position="bottom" :style="{height:'30%'}" @close="close">
           <div :style="{width:'90%',margin:'0 auto',padding:'50px 0'}">
-              <van-button :style="{marginBottom:'10px'}" block color="#1989fa">
+              <van-button :style="{marginBottom:'10px'}" block color="#1989fa" @click="goTo">
                   支付宝支付
               </van-button>
-              <van-button :style="{marginBottom:'10px'} " block color="#4fc08d">
+              <van-button :style="{marginBottom:'10px'} " block color="#4fc08d" @click="goTo">
                   微信支付
               </van-button>
           </div>  
@@ -88,7 +88,8 @@ export default {
         })
 
         const goTo=()=>{
-            router.push({path:'/address'})
+            Toast.success("支付成功")
+            router.push({path:'/home'})
         }
 
         const handleCreateOrder=()=>{
@@ -99,7 +100,7 @@ export default {
                 Toast.success('提交成功')
 
                 state.showPay=true
-                state.orderNo=res.id
+                // state.orderNo=res.id
 
                 //用不成
                 // payOrder(state.orderNo,{type:'aliyun'}).then(res=>{

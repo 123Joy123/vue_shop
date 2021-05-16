@@ -15,14 +15,14 @@
             </div>
 
             <ul class="user-list">
-                <li class="van-hairline--bottom" @click="goTo('/order')">
+                <!-- <li class="van-hairline--bottom" @click="goTo('/order')">
                     <span>我的订单</span>
                     <van-icon name="arrow"></van-icon>
                 </li>
                 <li class="van-hairline--bottom" @click="goTo('/address')">
                     <span>地址管理</span>
                     <van-icon name="arrow"></van-icon>
-                </li>
+                </li> -->
                 
             </ul>
         </div>
