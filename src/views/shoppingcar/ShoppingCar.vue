@@ -162,7 +162,7 @@ export default {
                 Toast.fail('请先选择结算商品')
                 return
             }else{
-                router.push({path:'/createcoder'})
+                router.push({path:'/createorder'})
             }
         }
 
@@ -206,7 +206,7 @@ export default {
         flex: 1;
         padding: 20px;
     }
-    .good-titel{
+    .good-title{
         display: flex;
         justify-content: space-between;
     }

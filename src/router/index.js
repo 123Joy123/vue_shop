@@ -9,6 +9,8 @@ const Profile =() => import('../views/profile/Profile')
 const ShoppingCar =() => import('../views/shoppingcar/ShoppingCar')
 const Register =() => import('../views/profile/Register')
 const Login =() => import('../views/profile/Login')
+const CreateOrder =() => import('../views/order/CreateOrder')
+const OrderDetail =() => import('../views/order/OrderDetail')
 
 
 const routes = [
@@ -57,6 +59,16 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: Login,
+  },
+  {
+    path: '/createorder',
+    name: 'CreateOrder',
+    component: CreateOrder,
+  },
+  {
+    path: '/orderdetail',
+    name: 'OrderDetail',
+    component: OrderDetail,
   },
 ]
 
