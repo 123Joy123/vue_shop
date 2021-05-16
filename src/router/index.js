@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory,createWebHashHistory } from 'vue-router'
 // import { useStore } from 'vuex'
 import store from '../store'
 import { Toast,Notify } from 'vant';
@@ -73,7 +73,10 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  //打包要改成hash模式
+  history: createWebHashHistory(),
+  // history: createWebHistory(process.env.BASE_URL),
+  base: process.env.BASE_URL,
   routes
 })
 
